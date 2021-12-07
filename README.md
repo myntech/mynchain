@@ -1,4 +1,4 @@
-# mynchain
+# MynChain
 A sample project to demonstrate the implementation of Blockchain's concepts
 
 **Tech Stack**
