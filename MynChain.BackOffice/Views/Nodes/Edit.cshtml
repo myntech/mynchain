@@ -1,0 +1,104 @@
+﻿@model MynChain.Models.Node
+@{
+    ViewData["Title"] = "Nodes | Edit";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Nodes</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/Home">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="/Nodes/Home">Nodes</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Edit</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div id="DivErrors" class="alert alert-danger alert-dismissable" style="display:none;">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        <span id="PError"></span>
+                    </div>
+
+                    <form id="FormEditNode" asp-action="Edit" asp-controller="Nodes" data-ajax="true" data-ajax-method="POST">
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="form-group row">
+                            <div class="col-sm-12" style="padding:0px;">
+                                <label class="col-sm-12 col-form-label">@Html.LabelFor(model => model.Address)</label>
+                                <div class="col-sm-12">
+                                    <input asp-for="Address" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" style="text-align:right;">
+                            <div class="col-sm-12 col-sm-offset-2">
+                                <button id="BtnSave" class="btn btn-primary btn-sm" type="submit"><i class="fa fa-refresh"></i> Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#BtnSave").click(function () {
+        $.ajax({
+            url: '@Url.Action("Edit", "Nodes")',
+            type: 'POST',
+            data: JSON.stringify($("#FormEditNode").serializeObject()),
+            headers: {
+                RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val(),
+            },
+            Accept: 'application/json',
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json",
+            success: function (data) {
+                if (data != null && data.success) {
+                    window.location.href = '@Url.Action("Home", "Nodes")';
+                } else {
+                    $('#PError').text(data.responseText);
+                    $('#DivErrors').attr('style', 'display:block');
+                }
+            },
+            error: function (data) {
+                $('#PError').text(data.responseText);
+                $('#DivErrors').attr('style', 'display:block');
+            }
+        });
+    });
+
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+</script>
