@@ -11,6 +11,7 @@ A sample project to demonstrate the implementation of Blockchain's concepts
 **What you'll find**
 - A WebApi project (**MynChain.Api**) that implement the Business Logic (**MynChain**)
 - Datas are written inside a MongoDb instance on your localhost through the **MynChain.Data.MongoDb**, which models are stored inside the **MynChain.Models** class project
+- a WebApp project (**MynChain.BackOffice**) to explore datas through a web interface
 
 **What you'll not find**
 - It's a demonstration purpose project, so you'll not find any implementation related to security/repository patterns, no authentication methods and, especially, is not ready for any kind of production; a lot of work, eventually, must be done
